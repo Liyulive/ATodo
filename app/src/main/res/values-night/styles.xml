@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.Atodo.Appbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/dark_main</item>
+    </style>
+
+    <style name="Widget.Atodo.MaterialCardView.ColorStroke" parent="Widget.Material3.CardView.Outlined">
+        <item name="strokeColor">@color/variant_90_dark</item>
+    </style>
+
+    <style name="Widget.Atodo.Chip.Assist" parent="Widget.Material3.Chip.Assist">
+        <item name="chipStrokeColor">@color/variant_90_dark</item>
+    </style>
+
+    <style name="Widget.Atodo.MaterialDivider" parent="Widget.Material3.MaterialDivider">
+        <item name="dividerColor">@color/variant_90_dark</item>
+    </style>
+
+    <style name="Widget.Atodo.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:strokeColor">@color/variant_90_dark</item>
+    </style>
+</resources>

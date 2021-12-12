@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.ATodo.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="appBarLayoutStyle">@style/Widget.Atodo.Appbar</item>
+        <item name="chipStyle">@style/Widget.Atodo.Chip.Assist</item>
+        <item name="materialCardViewStyle">@style/Widget.Atodo.MaterialCardView.ColorStroke</item>
+        <item name="materialDividerStyle">@style/Widget.Atodo.MaterialDivider</item>
+        <item name="textInputStyle">@style/Widget.Atodo.TextInputLayout</item>
+    </style>
+
+    <style name="Theme.ATodo" parent="Theme.Material3.DayNight">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/day_main</item>
+        <item name="materialCardViewStyle">@style/Widget.Atodo.MaterialCardView.ColorStroke</item>
+        <item name="chipStyle">@style/Widget.Atodo.Chip.Assist</item>
+        <item name="materialDividerStyle">@style/Widget.Atodo.MaterialDivider</item>
+        <item name="textInputStyle">@style/Widget.Atodo.TextInputLayout</item>
+    </style>
+
+</resources>

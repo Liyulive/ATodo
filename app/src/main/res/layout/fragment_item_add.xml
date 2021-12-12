@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edittext_add_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginBottom="12dp"
+            android:background="@null"
+            android:hint="新建任务"
+            android:singleLine="true"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edittext_add_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"
+            android:background="@null"
+            android:hint="添加详细信息"
+            android:maxLines="4"
+            android:textSize="14sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_add_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:visibility="gone"
+            app:closeIconEnabled="true" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_add_detail"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/linear"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="8dp"
+        app:icon="@drawable/ic_outline_notes_24"
+        app:iconGravity="textEnd"
+        app:iconSize="24dp" />
+
+    <Button
+        android:id="@+id/button_add_time"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/linear"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@id/button_add_detail"
+        app:icon="@drawable/ic_outline_date_range_24"
+        app:iconGravity="textEnd"
+        app:iconSize="24dp" />
+
+    <Button
+        android:id="@+id/button_add_todo"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/linear"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="保存" />
+
+
+</RelativeLayout>
