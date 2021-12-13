@@ -97,6 +97,7 @@ class AddFragment(val user: String, val category: String, val todoItem: TodoItem
                                 "保存成功",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            clickCallBack?.clickConfirm()
                             this@AddFragment.dismiss()
                         } else {
                             Log.d("AddFragment","editError:${p0.message}")

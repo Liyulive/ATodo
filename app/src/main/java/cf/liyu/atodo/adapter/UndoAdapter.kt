@@ -1,5 +1,6 @@
 package cf.liyu.atodo.adapter;
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,9 @@ import cf.liyu.atodo.R
 import cf.liyu.atodo.adapter.util.TodoUtil
 import cf.liyu.atodo.fragment.AddFragment
 import cf.liyu.atodo.model.TodoItem
+import cn.bmob.v3.BmobObject
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.UpdateListener
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 
@@ -20,6 +24,12 @@ class UndoAdapter(
 ) :
 
     RecyclerView.Adapter<UndoAdapter.ViewHolder>() {
+
+    var notifyCallBack: NotifyCallBack? = null
+
+    interface NotifyCallBack {
+        fun notifyData()
+    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         //Todo 在这里获取组件
@@ -54,18 +64,38 @@ class UndoAdapter(
             holder.timeChip.visibility = View.VISIBLE
         }
         holder.checkBox.isChecked = !mList[position].undo
+        holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            val old = mList[position]
+            val change =
+                TodoItem(old.user, old.title, old.detail, old.category, old.undo, old.deadline)
+            change.undo = isChecked
+            change.update(old.objectId, object : UpdateListener() {
+                override fun done(p0: BmobException?) {
+                    notifyCallBack?.notifyData()
+                }
+            })
+        }
         holder.card.setOnClickListener {
             val dialog = AddFragment(
                 mList[position].user,
                 mList[position].category,
                 mList[position]
             )
+            dialog.setCallback(object : AddFragment.ClickCallBack {
+                override fun clickConfirm() {
+                    notifyCallBack?.notifyData()
+                }
+            })
             dialog.show(manager, "editTodo")
         }
     }
 
     override fun getItemCount(): Int {
         return mList.size
+    }
+
+    fun setCallBack(callBack: NotifyCallBack) {
+        notifyCallBack = callBack
     }
 
 }

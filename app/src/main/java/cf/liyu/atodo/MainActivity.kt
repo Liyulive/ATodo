@@ -7,10 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Adapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import cf.liyu.atodo.adapter.UndoAdapter
 import cf.liyu.atodo.fragment.AddFragment
@@ -40,10 +42,26 @@ class MainActivity : AppCompatActivity() {
             viewModel.UndoList,
             supportFragmentManager
         )
+        undoAdapter.setCallBack(object : UndoAdapter.NotifyCallBack {
+            override fun notifyData() {
+                getTodoList(
+                    viewModel.user.value.toString(),
+                    tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString()
+                )
+            }
+        })
         completeAdapter = UndoAdapter(
             viewModel.completeList,
             supportFragmentManager
         )
+        completeAdapter.setCallBack(object : UndoAdapter.NotifyCallBack {
+            override fun notifyData() {
+                getTodoList(
+                    viewModel.user.value.toString(),
+                    tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString()
+                )
+            }
+        })
         recyclerview_complete.adapter = completeAdapter
         recyclerview_complete.layoutManager = LinearLayoutManager(this)
         recyclerview_undo.adapter = undoAdapter
