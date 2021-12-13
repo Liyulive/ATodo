@@ -35,9 +35,7 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
     }
 
     fun initView(root: View) {
-        if (category.category == "我的任务") {
-            root.menu_renameCategory.isEnabled = false
-            root.menu_renameCategory.text = "默认列表不能重命名"
+        if (tag == "default") {
             root.menu_deleteCategory.isEnabled = false
             root.menu_deleteCategory.text = "默认列表不能删除"
         }

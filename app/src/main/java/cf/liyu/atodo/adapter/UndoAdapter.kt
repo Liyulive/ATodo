@@ -1,6 +1,5 @@
 package cf.liyu.atodo.adapter;
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +11,14 @@ import cf.liyu.atodo.R
 import cf.liyu.atodo.adapter.util.TodoUtil
 import cf.liyu.atodo.fragment.AddFragment
 import cf.liyu.atodo.model.TodoItem
-import cn.bmob.v3.BmobObject
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.UpdateListener
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 
 class UndoAdapter(
-    val mList: ArrayList<TodoItem>,
-    val manager: FragmentManager
+    private val mList: ArrayList<TodoItem>,
+    private val manager: FragmentManager
 ) :
 
     RecyclerView.Adapter<UndoAdapter.ViewHolder>() {
@@ -60,11 +58,11 @@ class UndoAdapter(
             holder.timeChip.visibility = View.GONE
         } else {
             holder.timeChip.text =
-                TodoUtil.transferLongToDate("yyyy年MM月dd日", mList[position].deadline)
+                mList[position].deadline?.let { TodoUtil.transferLongToDate("yyyy年MM月dd日", it) }
             holder.timeChip.visibility = View.VISIBLE
         }
-        holder.checkBox.isChecked = !mList[position].undo
-        holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        holder.checkBox.isChecked = !mList[position].undo!!
+        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             val old = mList[position]
             val change =
                 TodoItem(old.user, old.title, old.detail, old.category, old.undo, old.deadline)
@@ -77,8 +75,8 @@ class UndoAdapter(
         }
         holder.card.setOnClickListener {
             val dialog = AddFragment(
-                mList[position].user,
-                mList[position].category,
+                null,
+                null,
                 mList[position]
             )
             dialog.setCallback(object : AddFragment.ClickCallBack {

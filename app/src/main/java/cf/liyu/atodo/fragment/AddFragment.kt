@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import cf.liyu.atodo.R
 import cf.liyu.atodo.adapter.util.TodoUtil
+import cf.liyu.atodo.model.Category
 import cf.liyu.atodo.model.TodoItem
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_item_add.view.*
 import kotlinx.android.synthetic.main.item_todo.view.*
 import java.lang.Exception
 
-class AddFragment(val user: String, val category: String, val todoItem: TodoItem?) : BottomSheetDialogFragment() {
+class AddFragment(val user: String?, val category: Category?, val todoItem: TodoItem?) : BottomSheetDialogFragment() {
 
     var todoTime: Long = 0
     var clickCallBack: ClickCallBack? = null
@@ -78,15 +79,15 @@ class AddFragment(val user: String, val category: String, val todoItem: TodoItem
             if (todoItem?.deadline != 0L) {
                 rootView.chip_add_time.visibility = View.VISIBLE
                 rootView.chip_add_time.text =
-                    TodoUtil.transferLongToDate("yyyy年MM月dd日", todoItem!!.deadline)
+                    todoItem!!.deadline?.let { TodoUtil.transferLongToDate("yyyy年MM月dd日", it) }
             }
             rootView.button_add_todo.setOnClickListener {
                 val updateItem = TodoItem(
-                    todoItem.user,
+                    null,
                     rootView.edittext_add_title.text.toString(),
                     rootView.edittext_add_detail.text.toString(),
-                    todoItem.category,
-                    todoItem.undo,
+                    null,
+                    null,
                     todoTime
                 )
                 updateItem.update(todoItem.objectId, object : UpdateListener() {
@@ -116,7 +117,7 @@ class AddFragment(val user: String, val category: String, val todoItem: TodoItem
                     user,
                     rootView.edittext_add_title.text.toString(),
                     rootView.edittext_add_detail.text.toString(),
-                    category,
+                    category?.objectId,
                     true,
                     todoTime
                 ).save(object : SaveListener<String>() {

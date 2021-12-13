@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.edit
+import cf.liyu.atodo.model.Category
 import cf.liyu.atodo.model.User
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
@@ -48,11 +49,17 @@ class LoginActivity : AppCompatActivity() {
                                 user.save(object : SaveListener<String>() {
                                     override fun done(id: String?, p1: BmobException?) {
                                         if (p1 == null) {
-                                            Toast.makeText(
-                                                this@LoginActivity,
-                                                "注册成功",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            val default = Category(user.username, "我的任务")
+                                            default.save(object : SaveListener<String>() {
+                                                override fun done(p0: String?, p1: BmobException?) {
+                                                    Toast.makeText(
+                                                        this@LoginActivity,
+                                                        "注册成功",
+                                                        Toast.LENGTH_SHORT
+                                                    )
+                                                        .show()
+                                                }
+                                            })
                                         } else {
                                             Toast.makeText(
                                                 this@LoginActivity,
@@ -70,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
                             inputLayout_username.error = "账号已存在"
                         }
                     } else {
-                        Log.d("LoginActivity","RegisterQueryFailure:${p1.message}")
+                        Log.d("LoginActivity", "RegisterQueryFailure:${p1.message}")
                     }
                 }
             })
@@ -97,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
                                 }
                             }
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.putExtra("parseUser",edittext_login_username.text.toString())
+                            intent.putExtra("parseUser", edittext_login_username.text.toString())
                             setResult(RESULT_OK, intent)
                             Toast.makeText(this@LoginActivity, "登陆成功", Toast.LENGTH_SHORT).show()
                             finish()

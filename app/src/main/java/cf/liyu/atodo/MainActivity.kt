@@ -27,6 +27,7 @@ import cn.bmob.v3.listener.FindListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,10 +47,7 @@ class MainActivity : AppCompatActivity() {
         )
         undoAdapter.setCallBack(object : UndoAdapter.NotifyCallBack {
             override fun notifyData() {
-                getTodoList(
-                    viewModel.user.value.toString(),
-                    tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString()
-                )
+                getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition])
             }
         })
         completeAdapter = UndoAdapter(
@@ -58,10 +56,7 @@ class MainActivity : AppCompatActivity() {
         )
         completeAdapter.setCallBack(object : UndoAdapter.NotifyCallBack {
             override fun notifyData() {
-                getTodoList(
-                    viewModel.user.value.toString(),
-                    tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString()
-                )
+                getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition])
             }
         })
         recyclerview_complete.adapter = completeAdapter
@@ -103,8 +98,8 @@ class MainActivity : AppCompatActivity() {
         /*观察*/
         viewModel.user.observe(this) {
             Log.d("MainActivity", "observe,it:$it")
-            getCategoryList(it)
-            getTodoList(it, "我的任务")
+            getCategoryList(it, true)
+//            getTodoList(viewModel.CategoryList[0])
         }
 
         bottomAppbar.setNavigationOnClickListener {
@@ -114,21 +109,19 @@ class MainActivity : AppCompatActivity() {
         bottomAppbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_more -> {
-                    var menuFragment: MenuFragment? = null
-                    if (tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text == "我的任务") {
-                        menuFragment =
-                            MenuFragment(Category(viewModel.user.value.toString(), "我的任务"))
-                    } else {
-                        menuFragment =
-                            MenuFragment(viewModel.CategoryList[tabLayout.selectedTabPosition - 1])
-                    }
-
+                    val menuFragment =
+                        MenuFragment(viewModel.CategoryList[tabLayout.selectedTabPosition])
                     menuFragment.setCallback(object : MenuFragment.ClickCallback {
                         override fun clickConfirm() {
-                            getCategoryList(viewModel.user.value.toString())
+                            getCategoryList(viewModel.user.value.toString(), false)
                         }
                     })
-                    menuFragment.show(supportFragmentManager, null)
+                    if (tabLayout.selectedTabPosition == 0) {
+                        menuFragment.show(supportFragmentManager, "default")
+                    } else {
+                        menuFragment.show(supportFragmentManager, null)
+                    }
+
                 }
             }
             true
@@ -137,16 +130,13 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val dialog = AddFragment(
                 viewModel.user.value.toString(),
-                tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString(),
+                viewModel.CategoryList[tabLayout.selectedTabPosition],
                 null
             )
             dialog.setCallback(object : AddFragment.ClickCallBack {
 
                 override fun clickConfirm() {
-                    getTodoList(
-                        viewModel.user.value.toString(),
-                        tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString()
-                    )
+                    getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition])
                 }
 
             })
@@ -155,7 +145,7 @@ class MainActivity : AppCompatActivity() {
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                getTodoList(viewModel.user.value.toString(), tab?.text.toString())
+                getTodoList(viewModel.CategoryList[tab!!.position])
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -169,7 +159,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getCategoryList(user: String) {
+    private fun getCategoryList(user: String, getTodo: Boolean) {
         BmobQuery<Category>().addWhereEqualTo("user", user).findObjects(object :
             FindListener<Category>() {
             override fun done(p0: MutableList<Category>?, p1: BmobException?) {
@@ -177,10 +167,12 @@ class MainActivity : AppCompatActivity() {
                     Log.d("MainActivity", "querySuccess,size:${p0?.size}")
                     viewModel.CategoryList.clear()
                     tabLayout.removeAllTabs()
-                    tabLayout.addTab(tabLayout.newTab().setText("我的任务"))
                     p0?.forEach {
                         viewModel.CategoryList.add(it)
                         tabLayout.addTab(tabLayout.newTab().setText(it.category))
+                    }
+                    if (getTodo) {
+                        getTodoList(viewModel.CategoryList[0])
                     }
                 } else {
                     Log.d("MainActivity", "queryError:${p1.message}")
@@ -189,16 +181,15 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getTodoList(user: String, category: String) {
+    private fun getTodoList(cate: Category) {
         BmobQuery<TodoItem>().apply {
-            addWhereEqualTo("user", user)
-            addWhereEqualTo("category", category)
+            addWhereEqualTo("category", cate.objectId)
             findObjects(object : FindListener<TodoItem>() {
                 override fun done(p0: MutableList<TodoItem>?, p1: BmobException?) {
                     viewModel.UndoList.clear()
                     viewModel.completeList.clear()
                     p0?.forEach {
-                        if (it.undo) {
+                        if (it.undo == true) {
                             viewModel.UndoList.add(it)
                         } else {
                             viewModel.completeList.add(it)
