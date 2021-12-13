@@ -114,7 +114,15 @@ class MainActivity : AppCompatActivity() {
         bottomAppbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_more -> {
-                    val menuFragment = MenuFragment(viewModel.user.value.toString())
+                    var menuFragment: MenuFragment? = null
+                    if (tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text == "我的任务") {
+                        menuFragment =
+                            MenuFragment(Category(viewModel.user.value.toString(), "我的任务"))
+                    } else {
+                        menuFragment =
+                            MenuFragment(viewModel.CategoryList[tabLayout.selectedTabPosition - 1])
+                    }
+
                     menuFragment.setCallback(object : MenuFragment.ClickCallback {
                         override fun clickConfirm() {
                             getCategoryList(viewModel.user.value.toString())
