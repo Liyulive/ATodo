@@ -79,12 +79,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem_default"
-                android:text="我的任务"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -94,6 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:fitsSystemWindows="true"
+        app:menu="@menu/more"
         app:navigationIcon="@drawable/ic_outline_search_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

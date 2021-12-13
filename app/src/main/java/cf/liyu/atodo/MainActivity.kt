@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.Adapter
 import android.widget.Toast
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import cf.liyu.atodo.adapter.UndoAdapter
 import cf.liyu.atodo.fragment.AddFragment
+import cf.liyu.atodo.fragment.MenuFragment
 import cf.liyu.atodo.model.Category
 import cf.liyu.atodo.model.TodoItem
 import cn.bmob.v3.Bmob
@@ -109,6 +111,21 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(bottomAppbar, "测试", Snackbar.LENGTH_SHORT).show()
         }
 
+        bottomAppbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_more -> {
+                    val menuFragment = MenuFragment(viewModel.user.value.toString())
+                    menuFragment.setCallback(object : MenuFragment.ClickCallback {
+                        override fun clickConfirm() {
+                            getCategoryList(viewModel.user.value.toString())
+                        }
+                    })
+                    menuFragment.show(supportFragmentManager, null)
+                }
+            }
+            true
+        }
+
         fab.setOnClickListener {
             val dialog = AddFragment(
                 viewModel.user.value.toString(),
@@ -151,6 +168,8 @@ class MainActivity : AppCompatActivity() {
                 if (p1 == null) {
                     Log.d("MainActivity", "querySuccess,size:${p0?.size}")
                     viewModel.CategoryList.clear()
+                    tabLayout.removeAllTabs()
+                    tabLayout.addTab(tabLayout.newTab().setText("我的任务"))
                     p0?.forEach {
                         viewModel.CategoryList.add(it)
                         tabLayout.addTab(tabLayout.newTab().setText(it.category))
