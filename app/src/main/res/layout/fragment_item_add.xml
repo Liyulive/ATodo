@@ -75,6 +75,21 @@
         app:iconSize="24dp" />
 
     <Button
+        android:id="@+id/button_item_delete"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/linear"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@id/button_add_time"
+        android:visibility="gone"
+        app:icon="@drawable/ic_outline_delete_forever_24"
+        app:iconGravity="textEnd"
+        app:iconSize="24dp"
+        app:iconTint="@color/alarm_red" />
+
+    <Button
         android:id="@+id/button_add_todo"
         style="@style/Widget.Material3.Button.TextButton"
         android:enabled="false"

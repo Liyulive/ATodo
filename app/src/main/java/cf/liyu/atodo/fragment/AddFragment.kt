@@ -71,6 +71,7 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
         }
 
         if (tag == "editTodo") {
+            rootView.button_item_delete.visibility = View.VISIBLE
             rootView.edittext_add_title.setText(todoItem?.title)
             if (todoItem?.detail != "") {
                 rootView.edittext_add_detail.setText(todoItem?.detail)
@@ -80,6 +81,16 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                 rootView.chip_add_time.visibility = View.VISIBLE
                 rootView.chip_add_time.text =
                     todoItem!!.deadline?.let { TodoUtil.transferLongToDate("yyyy年MM月dd日", it) }
+            }
+            rootView.button_item_delete.setOnClickListener {
+                val delete = TodoItem(null, null, null, null, null, null)
+                delete.objectId = todoItem.objectId
+                delete.delete(object : UpdateListener() {
+                    override fun done(p0: BmobException?) {
+                        clickCallBack?.clickConfirm()
+                        this@AddFragment.dismiss()
+                    }
+                })
             }
             rootView.button_add_todo.setOnClickListener {
                 val updateItem = TodoItem(
