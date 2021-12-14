@@ -103,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         /*初始化组件*/
+        swipeRefresh.setOnRefreshListener { getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition]) }
         bottomAppbar.setNavigationOnClickListener {
             Snackbar.make(bottomAppbar, "测试", Snackbar.LENGTH_SHORT).show()
         }
@@ -196,6 +197,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTodoList(cate: Category) {
+        swipeRefresh.isRefreshing = true
         BmobQuery<TodoItem>().apply {
             addWhereEqualTo("category", cate.objectId)
             findObjects(object : FindListener<TodoItem>() {
@@ -211,6 +213,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     undoAdapter.notifyDataSetChanged()
                     completeAdapter.notifyDataSetChanged()
+                    swipeRefresh.isRefreshing = false
                     Log.d("MainActivity", "UndoListSize:" + viewModel.UndoList.size.toString())
                 }
             })

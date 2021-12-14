@@ -64,10 +64,11 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
                             clickCallback?.clickConfirm()
                         }
                     })
+                    dismiss()
                 }
                 show()
             }
-            dismiss()
+
         }
         root.menu_renameCategory.setOnClickListener {
             MaterialAlertDialogBuilder(this.requireContext()).apply {
@@ -83,10 +84,11 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
                             clickCallback?.clickConfirm()
                         }
                     })
+                    dismiss()
                 }
                 show()
             }
-            dismiss()
+
         }
         root.menu_deleteCategory.setOnClickListener {
             val delete = Category("", "")
