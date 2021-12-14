@@ -103,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         /*初始化组件*/
+        swipeRefresh.setColorSchemeResources(R.color.design_default_color_primary_variant)
         swipeRefresh.setOnRefreshListener { getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition]) }
         bottomAppbar.setNavigationOnClickListener {
             Snackbar.make(bottomAppbar, "测试", Snackbar.LENGTH_SHORT).show()

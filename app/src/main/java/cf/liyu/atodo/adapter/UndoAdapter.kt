@@ -1,10 +1,12 @@
 package cf.liyu.atodo.adapter;
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import cf.liyu.atodo.R
@@ -62,14 +64,17 @@ class UndoAdapter(
             holder.timeChip.visibility = View.VISIBLE
         }
         holder.checkBox.isChecked = !mList[position].undo!!
-        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+        holder.checkBox.setOnClickListener {
             val old = mList[position]
             val change =
                 TodoItem(old.user, old.title, old.detail, old.category, old.undo, old.deadline)
-            change.undo = isChecked
+            change.undo = !holder.checkBox.isChecked
             change.update(old.objectId, object : UpdateListener() {
                 override fun done(p0: BmobException?) {
-                    notifyCallBack?.notifyData()
+                    if (p0 == null) {
+                        Log.d("mTest", "1")
+                        notifyCallBack?.notifyData()
+                    }
                 }
             })
         }
