@@ -9,7 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_main">#1C1B1F</color>
     <color name="day_main">#f1ecf6</color>
+    <color name="dark_dialog">#ff2f2c36</color>
     <color name="variant_90">#ffe7e0ec</color>
     <color name="variant_90_dark">#ff49454f</color>
     <color name="alarm_red">#ffD32F2F</color>
+    <color name="text_title">#ff202124</color>
+    <color name="text_detail">#ff5f6368</color>
+    <color name="text_title_dark">#ffe8eaed</color>
+    <color name="text_detail_dark">#ff9aa0a6</color>
 </resources>

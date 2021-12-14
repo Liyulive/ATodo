@@ -10,38 +10,60 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_margin="12dp"
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:layout_alignParentLeft="true"
-            android:id="@+id/checkbox_todo"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_toEndOf="@id/checkbox_todo"
-            android:id="@+id/textview_todo_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/textview_todo_detail"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textview_todo_title"
-            android:layout_toEndOf="@id/checkbox_todo" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox_todo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_todo_title"
+                    style="@style/Widget.Atodo.TextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="标题"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textview_todo_detail"
+                    style="@style/Widget.Atodo.TextDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="详细信息"
+                    android:layout_toEndOf="@id/checkbox_todo" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_todo_time"
             android:clickable="false"
             android:focusable="false"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/checkbox_todo" />
+            android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

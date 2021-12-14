@@ -241,6 +241,7 @@ class MainActivity : AppCompatActivity() {
                             viewModel.completeList.sortByDescending { it.deadline }
                         }
                     }
+                    textview_complete_count.text="已完成（${completeAdapter.itemCount}）"
                     undoAdapter.notifyDataSetChanged()
                     completeAdapter.notifyDataSetChanged()
                     swipeRefresh.isRefreshing = false
