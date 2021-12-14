@@ -17,6 +17,6 @@
     </style>
 
     <style name="Widget.Atodo.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/variant_90</item>
+<!--        <item name="boxStrokeColor"></item>-->
     </style>
 </resources>

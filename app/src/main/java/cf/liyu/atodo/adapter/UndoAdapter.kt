@@ -32,7 +32,6 @@ class UndoAdapter(
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        //Todo 在这里获取组件
         val title: TextView = view.findViewById(R.id.textview_todo_title)
         val detail: TextView = view.findViewById(R.id.textview_todo_detail)
         val checkBox: CheckBox = view.findViewById(R.id.checkbox_todo)
@@ -48,7 +47,6 @@ class UndoAdapter(
     }
 
     override fun onBindViewHolder(holder: UndoAdapter.ViewHolder, position: Int) {
-        //Todo 通过holder设置事件
         holder.title.text = mList[position].title
         if (mList[position].detail == "") {
             holder.detail.visibility = View.GONE
