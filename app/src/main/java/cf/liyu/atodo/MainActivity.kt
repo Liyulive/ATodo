@@ -6,14 +6,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.View
-import android.widget.Adapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import cf.liyu.atodo.adapter.UndoAdapter
 import cf.liyu.atodo.fragment.AddFragment
@@ -27,7 +26,6 @@ import cn.bmob.v3.listener.FindListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,23 +71,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        /*初始化Bmob*/
         Bmob.initialize(this, "016cb091df5d0cc2cf0c736831cb8734")
-
         Log.d("MainActivity", System.currentTimeMillis().toString())
+
+        /*初始化一个launcher打开login*/
+        val mActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == Activity.RESULT_OK) {
+                    viewModel.user.value = it.data?.getStringExtra("parseUser").toString()
+                    Log.d("MainActivity", "loginResult:${viewModel.user.value.toString()}")
+                }
+            }
 
         /*记住登录*/
         val sharedPreferences = getSharedPreferences("login", Context.MODE_PRIVATE)
         viewModel.isLogin = sharedPreferences.getBoolean("isLogin", false)
         if (!viewModel.isLogin) {
-            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show()
-            val mActivityLauncher =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    if (it.resultCode == Activity.RESULT_OK) {
-                        viewModel.user.value = it.data?.getStringExtra("parseUser").toString()
-                        Log.d("MainActivity", "loginResult:${viewModel.user.value.toString()}")
-                    }
-                }
-            mActivityLauncher.launch(Intent(this, LoginActivity::class.java))
+            startLogin(mActivityLauncher)
         } else {
             viewModel.user.value = sharedPreferences.getString("username", "").toString()
             Log.d("MainActivity", "isLogin:${viewModel.user.value.toString()}")
@@ -98,14 +97,17 @@ class MainActivity : AppCompatActivity() {
         /*观察*/
         viewModel.user.observe(this) {
             Log.d("MainActivity", "observe,it:$it")
-            getCategoryList(it, true)
-//            getTodoList(viewModel.CategoryList[0])
+            if (it != "") {
+                getCategoryList(it, true)
+            }
         }
 
+        /*初始化组件*/
         bottomAppbar.setNavigationOnClickListener {
             Snackbar.make(bottomAppbar, "测试", Snackbar.LENGTH_SHORT).show()
         }
 
+        /*底部菜单按钮*/
         bottomAppbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_more -> {
@@ -116,17 +118,28 @@ class MainActivity : AppCompatActivity() {
                             getCategoryList(viewModel.user.value.toString(), false)
                         }
                     })
+                    menuFragment.setExitCallback(object : MenuFragment.ExitConfirm {
+                        override fun exitConfirm() {
+                            sharedPreferences.edit {
+                                putBoolean("isLogin", false)
+                                putString("username", "")
+                                commit()
+                            }
+                            startLogin(mActivityLauncher)
+                            viewModel.user.value = ""
+                        }
+                    })
                     if (tabLayout.selectedTabPosition == 0) {
                         menuFragment.show(supportFragmentManager, "default")
                     } else {
                         menuFragment.show(supportFragmentManager, null)
                     }
-
                 }
             }
             true
         }
 
+        /*悬浮按钮*/
         fab.setOnClickListener {
             val dialog = AddFragment(
                 viewModel.user.value.toString(),
@@ -143,6 +156,7 @@ class MainActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager, "addTodo")
         }
 
+        /*tablayout选择*/
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 getTodoList(viewModel.CategoryList[tab!!.position])
@@ -201,6 +215,11 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    fun startLogin(mActivityLauncher: ActivityResultLauncher<Intent>) {
+        Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show()
+        mActivityLauncher.launch(Intent(this, LoginActivity::class.java))
     }
 
 }

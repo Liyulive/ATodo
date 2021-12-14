@@ -36,4 +36,19 @@
         style="@style/Widget.Material3.Button.TextButton"
         android:text="删除任务列表" />
 
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/menu_exit"
+        android:textColor="@color/alarm_red"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="start|center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:text="退出当前账号" />
+
 </LinearLayout>

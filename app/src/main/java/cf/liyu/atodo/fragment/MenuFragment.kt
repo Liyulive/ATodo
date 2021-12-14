@@ -8,21 +8,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.Toast
 import cf.liyu.atodo.R
 import cf.liyu.atodo.model.Category
+import cf.liyu.atodo.model.TodoItem
+import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
 
 class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
 
     var clickCallback: ClickCallback? = null
+    var exitConfirm: ExitConfirm? = null
 
     interface ClickCallback {
         fun clickConfirm()
+    }
+
+    interface ExitConfirm {
+        fun exitConfirm()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -37,7 +48,7 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
     fun initView(root: View) {
         if (tag == "default") {
             root.menu_deleteCategory.isEnabled = false
-            root.menu_deleteCategory.text = "默认列表不能删除"
+            root.menu_deleteCategory.text = "不能删除默认列表"
         }
         root.menu_addCategory.setOnClickListener {
             MaterialAlertDialogBuilder(this.requireContext()).apply {
@@ -45,7 +56,8 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
                 setView(R.layout.dialog_edit_text)
                 setNegativeButton("取消", null)
                 setPositiveButton("确定") { p1, _ ->
-                    val input: EditText? = (p1 as androidx.appcompat.app.AlertDialog).findViewById(R.id.dialog_edittext)
+                    val input: EditText? =
+                        (p1 as androidx.appcompat.app.AlertDialog).findViewById(R.id.dialog_edittext)
                     val new = Category(category.user, input?.text.toString())
                     new.save(object : SaveListener<String>() {
                         override fun done(p0: String?, p1: BmobException?) {
@@ -63,9 +75,10 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
                 setView(R.layout.dialog_edit_text)
                 setNegativeButton("取消", null)
                 setPositiveButton("确定") { p1, _ ->
-                    val input: EditText? = (p1 as androidx.appcompat.app.AlertDialog).findViewById(R.id.dialog_edittext)
+                    val input: EditText? =
+                        (p1 as androidx.appcompat.app.AlertDialog).findViewById(R.id.dialog_edittext)
                     val new = Category(category.user, input?.text.toString())
-                    new.update(category.objectId,object : UpdateListener() {
+                    new.update(category.objectId, object : UpdateListener() {
                         override fun done(p1: BmobException?) {
                             clickCallback?.clickConfirm()
                         }
@@ -83,11 +96,50 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
                     clickCallback?.clickConfirm()
                 }
             })
+            BmobQuery<TodoItem>().addWhereEqualTo("category", category.objectId)
+                .findObjects(object : FindListener<TodoItem>() {
+                    override fun done(p0: MutableList<TodoItem>?, p1: BmobException?) {
+                        if (p1 == null) {
+                            p0?.forEach {
+                                val willDelete = TodoItem(null, null, null, null, null, null)
+                                willDelete.objectId = it.objectId
+                                willDelete.delete(object : UpdateListener() {
+                                    override fun done(p0: BmobException?) {
+
+                                    }
+                                })
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@MenuFragment.requireContext(),
+                                p1.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                })
             dismiss()
+        }
+
+        root.menu_exit.setOnClickListener {
+            MaterialAlertDialogBuilder(this.requireContext()).apply {
+                setTitle("退出账号")
+                setMessage("确定要退出当前账号吗？")
+                setNegativeButton("取消", null)
+                setPositiveButton("确定") { _, _ ->
+                    this@MenuFragment.dismiss()
+                    exitConfirm?.exitConfirm()
+                }
+                show()
+            }
         }
     }
 
     fun setCallback(callback: ClickCallback) {
         clickCallback = callback
+    }
+
+    fun setExitCallback(callback: ExitConfirm) {
+        exitConfirm = callback
     }
 }

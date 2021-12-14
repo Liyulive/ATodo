@@ -11,4 +11,5 @@
     <color name="day_main">#f1ecf6</color>
     <color name="variant_90">#ffe7e0ec</color>
     <color name="variant_90_dark">#ff49454f</color>
+    <color name="alarm_red">#ffD32F2F</color>
 </resources>
