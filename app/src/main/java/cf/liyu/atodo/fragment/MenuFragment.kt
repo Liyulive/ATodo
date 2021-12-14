@@ -21,12 +21,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
 
-class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
+class MenuFragment(val category: Category, val sortBy: Int) : BottomSheetDialogFragment() {
 
-    var clickCallback: ClickCallback? = null
-    var exitConfirm: ExitConfirm? = null
+    private var clickCallback: ClickCallback? = null
+    private var exitConfirm: ExitConfirm? = null
+    private var sortCallback: SortCallback? = null
 
     interface ClickCallback {
         fun clickConfirm()
@@ -34,6 +36,10 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
 
     interface ExitConfirm {
         fun exitConfirm()
+    }
+
+    interface SortCallback {
+        fun sortConfirm(sortBy: Int)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -49,6 +55,11 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
         if (tag == "default") {
             root.menu_deleteCategory.isEnabled = false
             root.menu_deleteCategory.text = "不能删除默认列表"
+        }
+        when (sortBy) {
+            0 -> root.menu_textview_sortBy.text = "默认排序"
+            1 -> root.menu_textview_sortBy.text = "日期倒序"
+            2 -> root.menu_textview_sortBy.text = "日期顺序"
         }
         root.menu_addCategory.setOnClickListener {
             MaterialAlertDialogBuilder(this.requireContext()).apply {
@@ -135,6 +146,19 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
                 show()
             }
         }
+
+        root.menu_sortBy.setOnClickListener {
+            MaterialAlertDialogBuilder(this.requireContext()).apply {
+                setTitle("选择排序方式")
+                setSingleChoiceItems(arrayOf("默认排序", "日期倒序", "日期顺序"), sortBy) { dialog, which ->
+                    sortCallback?.sortConfirm(which)
+                    dialog.dismiss()
+                }
+                setNegativeButton("取消", null)
+                show()
+            }
+            dismiss()
+        }
     }
 
     fun setCallback(callback: ClickCallback) {
@@ -143,5 +167,9 @@ class MenuFragment(val category: Category) : BottomSheetDialogFragment() {
 
     fun setExitCallback(callback: ExitConfirm) {
         exitConfirm = callback
+    }
+
+    fun setSortCallback(callback: SortCallback) {
+        sortCallback = callback
     }
 }

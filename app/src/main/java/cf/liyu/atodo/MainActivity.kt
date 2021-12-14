@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         )
         undoAdapter.setCallBack(object : UndoAdapter.NotifyCallBack {
             override fun notifyData() {
-                getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition])
+                getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition], viewModel.sortBy)
             }
         })
         completeAdapter = UndoAdapter(
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         )
         completeAdapter.setCallBack(object : UndoAdapter.NotifyCallBack {
             override fun notifyData() {
-                getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition])
+                getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition], viewModel.sortBy)
             }
         })
         recyclerview_complete.adapter = completeAdapter
@@ -104,7 +104,11 @@ class MainActivity : AppCompatActivity() {
 
         /*初始化组件*/
         swipeRefresh.setColorSchemeResources(R.color.design_default_color_primary_variant)
-        swipeRefresh.setOnRefreshListener { getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition]) }
+        swipeRefresh.setOnRefreshListener {
+            getTodoList(
+                viewModel.CategoryList[tabLayout.selectedTabPosition],
+                viewModel.sortBy
+            ) }
         bottomAppbar.setNavigationOnClickListener {
             Snackbar.make(bottomAppbar, "测试", Snackbar.LENGTH_SHORT).show()
         }
@@ -114,7 +118,10 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.menu_more -> {
                     val menuFragment =
-                        MenuFragment(viewModel.CategoryList[tabLayout.selectedTabPosition])
+                        MenuFragment(
+                            viewModel.CategoryList[tabLayout.selectedTabPosition],
+                            viewModel.sortBy
+                        )
                     menuFragment.setCallback(object : MenuFragment.ClickCallback {
                         override fun clickConfirm() {
                             getCategoryList(viewModel.user.value.toString(), false)
@@ -129,6 +136,15 @@ class MainActivity : AppCompatActivity() {
                             }
                             startLogin(mActivityLauncher)
                             viewModel.user.value = ""
+                        }
+                    })
+                    menuFragment.setSortCallback(object : MenuFragment.SortCallback {
+                        override fun sortConfirm(sortBy: Int) {
+                            viewModel.sortBy = sortBy
+                            getTodoList(
+                                viewModel.CategoryList[tabLayout.selectedTabPosition],
+                                viewModel.sortBy
+                            )
                         }
                     })
                     if (tabLayout.selectedTabPosition == 0) {
@@ -151,7 +167,10 @@ class MainActivity : AppCompatActivity() {
             dialog.setCallback(object : AddFragment.ClickCallBack {
 
                 override fun clickConfirm() {
-                    getTodoList(viewModel.CategoryList[tabLayout.selectedTabPosition])
+                    getTodoList(
+                        viewModel.CategoryList[tabLayout.selectedTabPosition],
+                        viewModel.sortBy
+                    )
                 }
 
             })
@@ -161,7 +180,7 @@ class MainActivity : AppCompatActivity() {
         /*tablayout选择*/
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                getTodoList(viewModel.CategoryList[tab!!.position])
+                getTodoList(viewModel.CategoryList[tab!!.position], viewModel.sortBy)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -188,7 +207,7 @@ class MainActivity : AppCompatActivity() {
                         tabLayout.addTab(tabLayout.newTab().setText(it.category))
                     }
                     if (getTodo) {
-                        getTodoList(viewModel.CategoryList[0])
+                        getTodoList(viewModel.CategoryList[0], viewModel.sortBy)
                     }
                 } else {
                     Log.d("MainActivity", "queryError:${p1.message}")
@@ -197,7 +216,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getTodoList(cate: Category) {
+    private fun getTodoList(cate: Category, sortBy: Int) {
         swipeRefresh.isRefreshing = true
         BmobQuery<TodoItem>().apply {
             addWhereEqualTo("category", cate.objectId)
@@ -210,6 +229,16 @@ class MainActivity : AppCompatActivity() {
                             viewModel.UndoList.add(it)
                         } else {
                             viewModel.completeList.add(it)
+                        }
+                    }
+                    when (sortBy) {
+                        1 -> {
+                            viewModel.UndoList.sortBy { it.deadline }
+                            viewModel.completeList.sortBy { it.deadline }
+                        }
+                        2 -> {
+                            viewModel.UndoList.sortByDescending { it.deadline }
+                            viewModel.completeList.sortByDescending { it.deadline }
                         }
                     }
                     undoAdapter.notifyDataSetChanged()

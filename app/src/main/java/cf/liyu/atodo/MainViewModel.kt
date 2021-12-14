@@ -12,5 +12,6 @@ class MainViewModel : ViewModel() {
     var CategoryList = ArrayList<Category>()
     var UndoList = ArrayList<TodoItem>()
     var completeList = ArrayList<TodoItem>()
+    var sortBy = 0
 
 }
