@@ -6,15 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.edit
+import androidx.transition.TransitionManager
 import cf.liyu.atodo.model.Category
 import cf.liyu.atodo.model.User
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
+import com.google.android.material.transition.MaterialFade
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,10 +27,19 @@ class LoginActivity : AppCompatActivity() {
 
         /*切换注册登录*/
         button_switchLogin.setOnClickListener {
+
+            val materialFade = MaterialFade()
+            TransitionManager.beginDelayedTransition(card_login as ViewGroup, materialFade)
+            TransitionManager.beginDelayedTransition(card_register as ViewGroup, materialFade)
+
             card_login.visibility = View.VISIBLE
             card_register.visibility = View.GONE
         }
         button_switchRegister.setOnClickListener {
+
+            val materialFade = MaterialFade()
+            TransitionManager.beginDelayedTransition(card_login as ViewGroup, materialFade)
+            TransitionManager.beginDelayedTransition(card_register as ViewGroup, materialFade)
             card_login.visibility = View.GONE
             card_register.visibility = View.VISIBLE
         }

@@ -19,6 +19,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/scene"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/expand_complete"
                     android:clickable="true"
                     android:focusable="true"
@@ -46,14 +47,27 @@
                     <TextView
                         android:id="@+id/textview_complete_count"
                         style="@style/Widget.Atodo.TextTitle"
-                        android:textSize="16sp"
-                        android:layout_gravity="start|center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:text="已完成"
-                        android:layout_marginStart="12dp"/>
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/icon_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        android:contentDescription="666" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_complete"

@@ -5,8 +5,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +19,8 @@ import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Scene
+import androidx.transition.TransitionManager
 import cf.liyu.atodo.adapter.UndoAdapter
 import cf.liyu.atodo.fragment.AddFragment
 import cf.liyu.atodo.fragment.MenuFragment
@@ -25,7 +32,9 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.transition.MaterialFade
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,11 +72,26 @@ class MainActivity : AppCompatActivity() {
         recyclerview_undo.layoutManager = LinearLayoutManager(this)
         ViewCompat.setNestedScrollingEnabled(recyclerview_undo, false)
         ViewCompat.setNestedScrollingEnabled(recyclerview_complete, false)
+
+        /*生成动画*/
+        val rotateDown = AnimationUtils.loadAnimation(this, R.anim.rotate_down)
+        val rotateUp = AnimationUtils.loadAnimation(this, R.anim.rotate_up)
+        rotateDown.fillAfter = true
+        rotateUp.fillAfter = true
+        rotateDown.interpolator = AccelerateDecelerateInterpolator()
+        rotateUp.interpolator = AccelerateDecelerateInterpolator()
+        /*折叠list*/
         expand_complete.setOnClickListener {
+
+            val materialFade = MaterialFade()
+            TransitionManager.beginDelayedTransition(recyclerview_complete as ViewGroup, materialFade)
+
             if (recyclerview_complete.visibility == View.GONE) {
                 recyclerview_complete.visibility = View.VISIBLE
+                icon_arrow.startAnimation(rotateDown)
             } else {
                 recyclerview_complete.visibility = View.GONE
+                icon_arrow.startAnimation(rotateUp)
             }
         }
 
