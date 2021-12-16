@@ -12,11 +12,13 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Scene
@@ -30,6 +32,7 @@ import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.transition.MaterialFade
@@ -72,6 +75,10 @@ class MainActivity : AppCompatActivity() {
         recyclerview_undo.layoutManager = LinearLayoutManager(this)
         ViewCompat.setNestedScrollingEnabled(recyclerview_undo, false)
         ViewCompat.setNestedScrollingEnabled(recyclerview_complete, false)
+        edittext_filter.addTextChangedListener {
+            undoAdapter.filter.filter(it.toString())
+            completeAdapter.filter.filter(it.toString())
+        }
 
         /*生成动画*/
         val rotateDown = AnimationUtils.loadAnimation(this, R.anim.rotate_down)
@@ -133,11 +140,20 @@ class MainActivity : AppCompatActivity() {
                 viewModel.CategoryList[tabLayout.selectedTabPosition],
                 viewModel.sortBy
             ) }
-        bottomAppbar.setNavigationOnClickListener {
-            Snackbar.make(bottomAppbar, "测试", Snackbar.LENGTH_SHORT).show()
-        }
 
         /*底部菜单按钮*/
+        val bottomDrawerBehavior = BottomSheetBehavior.from<View>(bottom_drawer)
+        bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        bottomAppbar.setNavigationOnClickListener {
+            bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+        }
+
+        icon_filter_down.setOnClickListener {
+            edittext_filter.setText("")
+            bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
         bottomAppbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_more -> {
@@ -265,7 +281,9 @@ class MainActivity : AppCompatActivity() {
                             viewModel.completeList.sortByDescending { it.deadline }
                         }
                     }
-                    textview_complete_count.text="已完成（${completeAdapter.itemCount}）"
+                    undoAdapter.filter.filter(edittext_filter.text.toString())
+                    completeAdapter.filter.filter(edittext_filter.text.toString())
+                    textview_complete_count.text="已完成（${completeAdapter.getAllCount()}）"
                     undoAdapter.notifyDataSetChanged()
                     completeAdapter.notifyDataSetChanged()
                     swipeRefresh.isRefreshing = false

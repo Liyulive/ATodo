@@ -4,9 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import cf.liyu.atodo.R
@@ -23,9 +21,16 @@ class UndoAdapter(
     private val manager: FragmentManager
 ) :
 
-    RecyclerView.Adapter<UndoAdapter.ViewHolder>() {
+    RecyclerView.Adapter<UndoAdapter.ViewHolder>(), Filterable {
 
     var notifyCallBack: NotifyCallBack? = null
+    private var mSourceList: ArrayList<TodoItem> = ArrayList()
+    private var mFilterList: ArrayList<TodoItem> = ArrayList()
+
+    init {
+        mSourceList = mList
+        mFilterList = mList
+    }
 
     interface NotifyCallBack {
         fun notifyData()
@@ -37,7 +42,6 @@ class UndoAdapter(
         val checkBox: CheckBox = view.findViewById(R.id.checkbox_todo)
         val timeChip: Chip = view.findViewById(R.id.chip_todo_time)
         val card: MaterialCardView = view.findViewById(R.id.card_todo)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UndoAdapter.ViewHolder {
@@ -47,23 +51,24 @@ class UndoAdapter(
     }
 
     override fun onBindViewHolder(holder: UndoAdapter.ViewHolder, position: Int) {
-        holder.title.text = mList[position].title
-        if (mList[position].detail == "") {
+        val mTodo = mFilterList[position]
+        holder.title.text = mTodo.title
+        if (mTodo.detail == "") {
             holder.detail.visibility = View.GONE
         } else {
-            holder.detail.text = mList[position].detail
+            holder.detail.text = mTodo.detail
             holder.detail.visibility = View.VISIBLE
         }
-        if (mList[position].deadline == 0L) {
+        if (mTodo.deadline == 0L) {
             holder.timeChip.visibility = View.GONE
         } else {
             holder.timeChip.text =
-                mList[position].deadline?.let { TodoUtil.transferLongToDate("yyyy年MM月dd日", it) }
+                mTodo.deadline?.let { TodoUtil.transferLongToDate("yyyy年MM月dd日", it) }
             holder.timeChip.visibility = View.VISIBLE
         }
-        holder.checkBox.isChecked = !mList[position].undo!!
+        holder.checkBox.isChecked = !mTodo.undo!!
         holder.checkBox.setOnClickListener {
-            val old = mList[position]
+            val old = mTodo
             val change =
                 TodoItem(old.user, old.title, old.detail, old.category, old.undo, old.deadline)
             change.undo = !holder.checkBox.isChecked
@@ -80,7 +85,7 @@ class UndoAdapter(
             val dialog = AddFragment(
                 null,
                 null,
-                mList[position]
+                mTodo
             )
             dialog.setCallback(object : AddFragment.ClickCallBack {
                 override fun clickConfirm() {
@@ -92,11 +97,47 @@ class UndoAdapter(
     }
 
     override fun getItemCount(): Int {
-        return mList.size
+        return mFilterList.size
+    }
+
+    fun getAllCount(): Int {
+        return mSourceList.size
     }
 
     fun setCallBack(callBack: NotifyCallBack) {
         notifyCallBack = callBack
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            //执行过滤操作
+            override fun performFiltering(charSequence: CharSequence): FilterResults? {
+                val charString = charSequence.toString()
+                if (charString.isEmpty()) {
+                    //没有过滤的内容，则使用源数据
+                    mFilterList = mSourceList
+                } else {
+                    val filteredList: ArrayList<TodoItem> = ArrayList()
+                    for (todo in mSourceList) {
+                        //这里根据需求，添加匹配规则
+                        if (todo.title!!.contains(charSequence)) {
+                            filteredList.add(todo)
+                        }
+                    }
+                    mFilterList = filteredList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = mFilterList
+                return filterResults
+            }
+
+            //把过滤后的值返回出来
+            override fun publishResults(charSequence: CharSequence?, filterResults: FilterResults) {
+                mFilterList = filterResults.values as ArrayList<TodoItem>
+                notifyDataSetChanged()
+            }
+        }
+    }
+
 
 }

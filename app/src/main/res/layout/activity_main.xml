@@ -123,4 +123,41 @@
         android:src="@android:drawable/ic_input_add"
         app:layout_anchor="@id/bottomAppbar" />
 
+    <FrameLayout
+        android:id="@+id/bottom_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/day_main"
+        app:behavior_hideable="true"
+        android:elevation="16dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edittext_filter"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@null"
+                android:hint="搜索"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/icon_filter_down"
+                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:layout_width="?attr/actionBarSize"
+                android:scaleType="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
