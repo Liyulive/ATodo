@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="day_main">#ff2a2b31</color>
+    <color name="variant_90">#ff49454f</color>
 </resources>

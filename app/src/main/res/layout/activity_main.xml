@@ -127,7 +127,7 @@
         android:id="@+id/bottom_drawer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/day_main"
+        android:background="@color/variant_90"
         app:behavior_hideable="true"
         android:elevation="16dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
