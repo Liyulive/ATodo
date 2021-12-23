@@ -52,6 +52,8 @@ class LoginActivity : AppCompatActivity() {
                             }
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("parseUser", edittext_login_username.text.toString())
+                            Log.d("mTest", list!![0].objectId)
+                            intent.putExtra("userId", list!![0].objectId)
                             setResult(RESULT_OK, intent)
                             Toast.makeText(this@LoginActivity, "登陆成功", Toast.LENGTH_SHORT).show()
                             finish()

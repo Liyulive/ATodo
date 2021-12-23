@@ -13,5 +13,6 @@ class MainViewModel : ViewModel() {
     var UndoList = ArrayList<TodoItem>()
     var completeList = ArrayList<TodoItem>()
     var sortBy = 0
+    var userId = ""
 
 }

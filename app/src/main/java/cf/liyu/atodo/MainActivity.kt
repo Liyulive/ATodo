@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         signSharedPreferences = this.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
         /*初始化Bmob*/
-        Bmob.initialize(this, "016cb091df5d0cc2cf0c736831cb8734")
+        Bmob.initialize(this, "Your Bmob Id")
         Log.d("MainActivity", System.currentTimeMillis().toString())
 
         /*adapter数据并取消嵌套滑动*/
@@ -99,7 +99,10 @@ class MainActivity : AppCompatActivity() {
         expand_complete.setOnClickListener {
 
             val materialFade = MaterialFade()
-            TransitionManager.beginDelayedTransition(recyclerview_complete as ViewGroup, materialFade)
+            TransitionManager.beginDelayedTransition(
+                recyclerview_complete as ViewGroup,
+                materialFade
+            )
 
             if (recyclerview_complete.visibility == View.GONE) {
                 recyclerview_complete.visibility = View.VISIBLE
@@ -115,6 +118,7 @@ class MainActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == Activity.RESULT_OK) {
                     viewModel.user.value = it.data?.getStringExtra("parseUser").toString()
+                    viewModel.userId = it.data?.getStringExtra("userId").toString()
                     Log.d("MainActivity", "loginResult:${viewModel.user.value.toString()}")
                 }
             }
@@ -143,7 +147,8 @@ class MainActivity : AppCompatActivity() {
             getTodoList(
                 viewModel.CategoryList[tabLayout.selectedTabPosition],
                 viewModel.sortBy
-            ) }
+            )
+        }
 
         /*底部菜单按钮*/
         val bottomDrawerBehavior = BottomSheetBehavior.from<View>(bottom_drawer)
@@ -198,7 +203,11 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.menu_account -> {
-                    startActivity(Intent(this, AccountActivity::class.java))
+                    val intent = Intent(this, AccountActivity::class.java).putExtra(
+                        "userId",
+                        viewModel.userId
+                    )
+                    startActivity(intent)
                 }
             }
             true
@@ -290,7 +299,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     undoAdapter.filter.filter(edittext_filter.text.toString())
                     completeAdapter.filter.filter(edittext_filter.text.toString())
-                    textview_complete_count.text="已完成（${completeAdapter.getAllCount()}）"
+                    textview_complete_count.text = "已完成（${completeAdapter.getAllCount()}）"
                     undoAdapter.notifyDataSetChanged()
                     completeAdapter.notifyDataSetChanged()
                     swipeRefresh.isRefreshing = false
@@ -302,8 +311,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val sign = signSharedPreferences.getString("sign", "千里之行，始于足下")
-        text_sign.text = sign
+        val sign = signSharedPreferences.getString("sign", "")
+        val subTitle = signSharedPreferences.getString("subtitle", "")
+        if (sign == "") {
+            text_sign.visibility = View.GONE
+        } else {
+            text_sign.visibility = View.VISIBLE
+            text_sign.text = sign
+        }
+        toolbar.subtitle = subTitle
     }
 
     fun startLogin(mActivityLauncher: ActivityResultLauncher<Intent>) {

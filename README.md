@@ -1,3 +1,3 @@
 # ATodo
-一个Todo
-遵循Material3设计的Todo应用。
+一个Todo 
+遵循Material3设计规范的待办。

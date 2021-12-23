@@ -39,8 +39,9 @@ class RegisterActivity : AppCompatActivity() {
                                 user.save(object : SaveListener<String>() {
                                     override fun done(id: String?, p1: BmobException?) {
                                         if (p1 == null) {
-                                            val default = Category(user.username, "我的任务")
-                                            default.save(object : SaveListener<String>() {
+                                            val default =
+                                                user.username?.let { it1 -> Category(it1, "我的任务") }
+                                            default?.save(object : SaveListener<String>() {
                                                 override fun done(p0: String?, p1: BmobException?) {
                                                     Toast.makeText(
                                                         this@RegisterActivity,
