@@ -26,74 +26,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         /*切换注册登录*/
-        button_switchLogin.setOnClickListener {
-
-            val materialFade = MaterialFade()
-            TransitionManager.beginDelayedTransition(card_login as ViewGroup, materialFade)
-            TransitionManager.beginDelayedTransition(card_register as ViewGroup, materialFade)
-
-            card_login.visibility = View.VISIBLE
-            card_register.visibility = View.GONE
-        }
-        button_switchRegister.setOnClickListener {
-
-            val materialFade = MaterialFade()
-            TransitionManager.beginDelayedTransition(card_login as ViewGroup, materialFade)
-            TransitionManager.beginDelayedTransition(card_register as ViewGroup, materialFade)
-            card_login.visibility = View.GONE
-            card_register.visibility = View.VISIBLE
-        }
-
-        /*注册*/
-        button_register.setOnClickListener {
-            val query = BmobQuery<User>()
-            query.addWhereEqualTo("username", edittext_register_username.text.toString())
-            query.findObjects(object : FindListener<User>() {
-                override fun done(p0: MutableList<User>?, p1: BmobException?) {
-                    if (p1 == null) {
-                        if (p0?.size == 0) {
-                            if (edittext_register_password.text.toString() == edittext_register_confirm.text.toString()) {
-                                val user = User(
-                                    edittext_register_username.text.toString(),
-                                    edittext_register_password.text.toString()
-                                )
-                                inputLayout_username.error = null
-                                inputLayout_confirm.error = null
-                                user.save(object : SaveListener<String>() {
-                                    override fun done(id: String?, p1: BmobException?) {
-                                        if (p1 == null) {
-                                            val default = Category(user.username, "我的任务")
-                                            default.save(object : SaveListener<String>() {
-                                                override fun done(p0: String?, p1: BmobException?) {
-                                                    Toast.makeText(
-                                                        this@LoginActivity,
-                                                        "注册成功",
-                                                        Toast.LENGTH_SHORT
-                                                    )
-                                                        .show()
-                                                }
-                                            })
-                                        } else {
-                                            Toast.makeText(
-                                                this@LoginActivity,
-                                                "注册失败",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            Log.d("LoginActivity", "RegisterFailure:${p1.message}")
-                                        }
-                                    }
-                                })
-                            } else {
-                                inputLayout_confirm.error = "两次密码不一致"
-                            }
-                        } else {
-                            inputLayout_username.error = "账号已存在"
-                        }
-                    } else {
-                        Log.d("LoginActivity", "RegisterQueryFailure:${p1.message}")
-                    }
-                }
-            })
+        button_switch_register.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
 
         /*登录*/

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/start_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="16dp"
         android:layout_weight="1">
 
         <ImageView
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="Hi"
+            android:text="在此"
             android:textAppearance="?attr/textAppearanceHeadline5" />
 
         <TextView
@@ -35,17 +35,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="Sign in with your account"
+            android:text="创建您的账户"
             android:textAppearance="?attr/textAppearanceCaption" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayout_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:hint="账号">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edittext_login_username"
+                android:id="@+id/edittext_register_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -57,7 +58,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edittext_login_password"
+                android:id="@+id/edittext_register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -65,14 +66,22 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayout_confirm"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            app:passwordToggleEnabled="true"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:layout_marginTop="2dp"
-            android:id="@+id/button_switch_register"
-            style="?attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="创建账号" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_register_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="确认密码" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
 
     <FrameLayout
@@ -80,19 +89,20 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox_rememberLogin"
+        <Button
+            style="@style/Widget.Material3.Button.TextButton"
+            android:id="@+id/button_back_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="记住登录" />
+            android:text="返回" />
 
         <Button
-            android:id="@+id/button_login"
+            android:id="@+id/button_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="登录" />
+            android:text="注册" />
+
     </FrameLayout>
 
 </LinearLayout>
