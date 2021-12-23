@@ -44,12 +44,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_marginBottom="12dp"
                 android:layout_width="match_parent"
+                app:passwordToggleEnabled="true"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edittext_register_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="密码" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -58,12 +60,14 @@
                 android:id="@+id/inputLayout_confirm"
                 android:layout_marginBottom="12dp"
                 android:layout_width="match_parent"
+                app:passwordToggleEnabled="true"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edittext_register_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="确认密码" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -128,12 +132,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_marginBottom="12dp"
                 android:layout_width="match_parent"
+                app:passwordToggleEnabled="true"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edittext_login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="密码" />
 
             </com.google.android.material.textfield.TextInputLayout>

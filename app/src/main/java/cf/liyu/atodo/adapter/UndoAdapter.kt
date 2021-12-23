@@ -1,5 +1,6 @@
 package cf.liyu.atodo.adapter;
 
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,13 @@ class UndoAdapter(
             holder.timeChip.text =
                 mTodo.deadline?.let { TodoUtil.transferLongToDate("yyyy年MM月dd日", it) }
             holder.timeChip.visibility = View.VISIBLE
+        }
+        if (mTodo.undo == false) {
+            holder.title.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            holder.detail.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            holder.title.paint.isAntiAlias = true
+            holder.detail.paint.isAntiAlias = true
+            holder.timeChip.visibility = View.GONE
         }
         holder.checkBox.isChecked = !mTodo.undo!!
         holder.checkBox.setOnClickListener {

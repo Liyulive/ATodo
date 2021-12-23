@@ -102,36 +102,44 @@ class MenuFragment(val category: Category, val sortBy: Int) : BottomSheetDialogF
 
         }
         root.menu_deleteCategory.setOnClickListener {
-            val delete = Category("", "")
-            delete.objectId = category.objectId
-            delete.delete(object : UpdateListener() {
-                override fun done(p0: BmobException?) {
-                    clickCallback?.clickConfirm()
-                }
-            })
-            BmobQuery<TodoItem>().addWhereEqualTo("category", category.objectId)
-                .findObjects(object : FindListener<TodoItem>() {
-                    override fun done(p0: MutableList<TodoItem>?, p1: BmobException?) {
-                        if (p1 == null) {
-                            p0?.forEach {
-                                val willDelete = TodoItem(null, null, null, null, null, null)
-                                willDelete.objectId = it.objectId
-                                willDelete.delete(object : UpdateListener() {
-                                    override fun done(p0: BmobException?) {
-
-                                    }
-                                })
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@MenuFragment.requireContext(),
-                                p1.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
+            MaterialAlertDialogBuilder(this.requireContext()).apply {
+                setTitle("删除任务列表")
+                setMessage("删除列表将删除该列表下所有待办，且不可撤销！")
+                setNegativeButton("取消", null)
+                setPositiveButton("仍要删除") { _,_ ->
+                    val delete = Category("", "")
+                    delete.objectId = category.objectId
+                    delete.delete(object : UpdateListener() {
+                        override fun done(p0: BmobException?) {
+                            clickCallback?.clickConfirm()
                         }
-                    }
-                })
-            dismiss()
+                    })
+                    BmobQuery<TodoItem>().addWhereEqualTo("category", category.objectId)
+                        .findObjects(object : FindListener<TodoItem>() {
+                            override fun done(p0: MutableList<TodoItem>?, p1: BmobException?) {
+                                if (p1 == null) {
+                                    p0?.forEach {
+                                        val willDelete = TodoItem(null, null, null, null, null, null)
+                                        willDelete.objectId = it.objectId
+                                        willDelete.delete(object : UpdateListener() {
+                                            override fun done(p0: BmobException?) {
+
+                                            }
+                                        })
+                                    }
+                                } else {
+                                    Toast.makeText(
+                                        this@MenuFragment.requireContext(),
+                                        p1.message,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        })
+                    dismiss()
+                }
+                show()
+            }
         }
 
         root.menu_exit.setOnClickListener {

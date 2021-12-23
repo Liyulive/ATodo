@@ -22,7 +22,8 @@ import kotlinx.android.synthetic.main.fragment_item_add.view.*
 import kotlinx.android.synthetic.main.item_todo.view.*
 import java.lang.Exception
 
-class AddFragment(val user: String?, val category: Category?, val todoItem: TodoItem?) : BottomSheetDialogFragment() {
+class AddFragment(val user: String?, val category: Category?, val todoItem: TodoItem?) :
+    BottomSheetDialogFragment() {
 
     var todoTime: Long = 0
     var clickCallBack: ClickCallBack? = null
@@ -80,7 +81,10 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
             if (todoItem?.deadline != 0L) {
                 rootView.chip_add_time.visibility = View.VISIBLE
                 rootView.chip_add_time.text =
-                    todoItem!!.deadline?.let { TodoUtil.transferLongToDate("yyyy年MM月dd日", it) }
+                    todoItem!!.deadline?.let {
+                        TodoUtil.transferLongToDate("yyyy年MM月dd日", it)
+                    }
+                todoTime = todoItem.deadline!!
             }
             rootView.button_item_delete.setOnClickListener {
                 val delete = TodoItem(null, null, null, null, null, null)
@@ -112,7 +116,7 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                             clickCallBack?.clickConfirm()
                             this@AddFragment.dismiss()
                         } else {
-                            Log.d("AddFragment","editError:${p0.message}")
+                            Log.d("AddFragment", "editError:${p0.message}")
                             Toast.makeText(
                                 this@AddFragment.requireContext(),
                                 "保存失败，${p0.message}",
