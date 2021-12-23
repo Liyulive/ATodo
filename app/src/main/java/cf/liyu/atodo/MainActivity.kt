@@ -3,6 +3,7 @@ package cf.liyu.atodo
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
@@ -44,11 +45,17 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: MainViewModel
     lateinit var undoAdapter: UndoAdapter
     lateinit var completeAdapter: UndoAdapter
+    lateinit var signSharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        signSharedPreferences = this.getSharedPreferences("settings", Context.MODE_PRIVATE)
+
+        /*初始化Bmob*/
+        Bmob.initialize(this, "016cb091df5d0cc2cf0c736831cb8734")
+        Log.d("MainActivity", System.currentTimeMillis().toString())
 
         /*adapter数据并取消嵌套滑动*/
         undoAdapter = UndoAdapter(
@@ -87,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         rotateUp.fillAfter = true
         rotateDown.interpolator = AccelerateDecelerateInterpolator()
         rotateUp.interpolator = AccelerateDecelerateInterpolator()
+
         /*折叠list*/
         expand_complete.setOnClickListener {
 
@@ -101,10 +109,6 @@ class MainActivity : AppCompatActivity() {
                 icon_arrow.startAnimation(rotateUp)
             }
         }
-
-        /*初始化Bmob*/
-        Bmob.initialize(this, "016cb091df5d0cc2cf0c736831cb8734")
-        Log.d("MainActivity", System.currentTimeMillis().toString())
 
         /*初始化一个launcher打开login*/
         val mActivityLauncher =
@@ -127,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
         /*观察*/
         viewModel.user.observe(this) {
-            Log.d("MainActivity", "observe,it:$it")
+            Log.d("MainActivity", "observe,user:$it")
             if (it != "") {
                 getCategoryList(it, true)
             }
@@ -294,6 +298,12 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val sign = signSharedPreferences.getString("sign", "千里之行，始于足下")
+        text_sign.text = sign
     }
 
     fun startLogin(mActivityLauncher: ActivityResultLauncher<Intent>) {
