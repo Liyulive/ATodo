@@ -17,4 +17,8 @@
         <item name="materialDividerStyle">@style/Widget.Atodo.MaterialDivider</item>
         <item name="textInputStyle">@style/Widget.Atodo.TextInputLayout</item>
     </style>
+
+    <style name="Settings" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/day_main</item>
+    </style>
 </resources>

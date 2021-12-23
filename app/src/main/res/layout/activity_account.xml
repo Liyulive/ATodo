@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true"
+    tools:context=".AccountActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            style="?attr/collapsingToolbarLayoutLargeStyle"
+            android:background="@color/day_main"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            app:expandedTitleMarginBottom="24dp"
+            app:expandedTitleMarginEnd="24dp"
+            app:expandedTitleMarginStart="24dp"
+            app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap|enterAlwaysCollapsed">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_account"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin"
+                app:title="账号 &amp; 设置" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Outlined"
+            app:strokeColor="?colorButtonNormal"
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_margin="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="账号" />
+
+                <LinearLayout
+                    android:id="@+id/button_sign_change"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?selectableItemBackground"
+                    android:layout_height="?actionBarSize">
+
+                    <ImageView
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_baseline_text_snippet_24"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <LinearLayout
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/Widget.Atodo.TextTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="设置签名"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/text_sign_change"
+                            style="@style/Widget.Atodo.TextDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="皇天久不雨，既雨晴亦佳" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_password_change"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?selectableItemBackground"
+                    android:layout_height="?actionBarSize">
+
+                    <ImageView
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_baseline_key_24"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp" />
+
+                    <LinearLayout
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/Widget.Atodo.TextTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="更改密码"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -40,6 +40,7 @@
                     android:id="@+id/expand_complete"
                     android:clickable="true"
                     android:focusable="true"
+                    android:layout_marginBottom="12dp"
                     android:background="?attr/selectableItemBackground"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize">
@@ -76,8 +77,21 @@
                     android:layout_height="wrap_content" />
 
                 <LinearLayout
+                    android:gravity="top|center"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="90dp" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="皇天久不雨，既雨晴亦佳" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="102dp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -93,6 +107,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             app:title="@string/app_name"
+            app:subtitleTextColor="?attr/colorSurface"
             app:titleTextColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -18,9 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ATodo">
         <activity
-            android:label="注册"
-            android:name=".RegisterActivity"
+            android:name=".AccountActivity"
+            android:theme="@style/Settings"
             android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="注册" />
         <activity
             android:name=".LoginActivity"
             android:exported="false"

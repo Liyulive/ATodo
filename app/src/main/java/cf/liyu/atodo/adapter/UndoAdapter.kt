@@ -83,7 +83,6 @@ class UndoAdapter(
             change.update(old.objectId, object : UpdateListener() {
                 override fun done(p0: BmobException?) {
                     if (p0 == null) {
-                        Log.d("mTest", "1")
                         notifyCallBack?.notifyData()
                     }
                 }

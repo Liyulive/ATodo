@@ -193,6 +193,9 @@ class MainActivity : AppCompatActivity() {
                         menuFragment.show(supportFragmentManager, null)
                     }
                 }
+                R.id.menu_account -> {
+                    startActivity(Intent(this, AccountActivity::class.java))
+                }
             }
             true
         }
