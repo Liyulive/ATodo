@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -92,14 +92,25 @@
     <Button
         android:id="@+id/button_add_todo"
         style="@style/Widget.Material3.Button.TextButton"
-        android:enabled="false"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@id/linear"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:enabled="false"
         android:text="保存" />
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_add_todo"
+        android:indeterminate="true"
+        app:hideAnimationBehavior="inward"
+        app:indeterminateAnimationType="contiguous"
+        app:indicatorColor="@array/progress_colors"
+        app:indicatorDirectionLinear="leftToRight"
+        app:showAnimationBehavior="outward" />
 
 </RelativeLayout>

@@ -17,6 +17,7 @@ import cn.bmob.v3.listener.SaveListener
 import cn.bmob.v3.listener.UpdateListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_item_add.*
 import kotlinx.android.synthetic.main.fragment_item_add.view.*
 import kotlinx.android.synthetic.main.item_todo.view.*
@@ -42,6 +43,7 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
     }
 
     private fun initView(rootView: View) {
+        rootView.progress_save.hide()
         rootView.edittext_add_title.requestFocus()
         rootView.edittext_add_title.addTextChangedListener {
             rootView.button_add_todo.isEnabled = it.toString() != ""
@@ -87,10 +89,12 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                 todoTime = todoItem.deadline!!
             }
             rootView.button_item_delete.setOnClickListener {
+                rootView.progress_save.show()
                 val delete = TodoItem(null, null, null, null, null, null)
                 delete.objectId = todoItem.objectId
                 delete.delete(object : UpdateListener() {
                     override fun done(p0: BmobException?) {
+                        rootView.progress_save.hide()
                         if (p0 == null) {
                             clickCallBack?.clickConfirm()
                             this@AddFragment.dismiss()
@@ -101,6 +105,8 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                 })
             }
             rootView.button_add_todo.setOnClickListener {
+                rootView.progress_save.show()
+                rootView.button_add_todo.isEnabled = false
                 val updateItem = TodoItem(
                     null,
                     rootView.edittext_add_title.text.toString(),
@@ -111,10 +117,12 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                 )
                 updateItem.update(todoItem.objectId, object : UpdateListener() {
                     override fun done(p0: BmobException?) {
+                        rootView.progress_save.hide()
                         if (p0 == null) {
                             clickCallBack?.clickConfirm()
                             this@AddFragment.dismiss()
                         } else {
+                            rootView.button_add_todo.isEnabled = true
                             Log.d("AddFragment", "editError:${p0.message}")
                             Toast.makeText(
                                 this@AddFragment.requireContext(),
@@ -127,6 +135,8 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
             }
         } else if (tag == "addTodo") {
             rootView.button_add_todo.setOnClickListener {
+                rootView.progress_save.show()
+                rootView.button_add_todo.isEnabled = false
                 TodoItem(
                     user,
                     rootView.edittext_add_title.text.toString(),
@@ -136,10 +146,12 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                     todoTime
                 ).save(object : SaveListener<String>() {
                     override fun done(id: String?, p1: BmobException?) {
+                        rootView.progress_save.hide()
                         if (p1 == null) {
                             clickCallBack?.clickConfirm()
                             this@AddFragment.dismiss()
                         } else {
+                            rootView.button_add_todo.isEnabled = true
                             Log.d("AddFragment", "AddError:" + p1.message.toString())
                             Toast.makeText(
                                 this@AddFragment.requireContext(),
