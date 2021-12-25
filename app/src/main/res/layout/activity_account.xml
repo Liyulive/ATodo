@@ -161,6 +161,43 @@
                         android:text="其它" />
 
                     <LinearLayout
+                        android:id="@+id/button_dark_change"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:minHeight="?actionBarSize"
+                        android:background="?selectableItemBackground"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_marginStart="16dp"
+                            android:src="@drawable/ic_baseline_dark_mode_24"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp" />
+
+                        <LinearLayout
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switch_dark"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:clickable="false"
+                                android:text="深色模式" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/button_subtitle_change"
                         android:gravity="center_vertical"
                         android:layout_width="match_parent"

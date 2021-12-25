@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener

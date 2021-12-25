@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import cf.liyu.atodo.model.User
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.UpdateListener
@@ -126,6 +127,20 @@ class AccountActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data= Uri.parse("https://github.com/Liyulive/ATodo")
             startActivity(intent)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        switch_dark.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+        button_dark_change.setOnClickListener {
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                switch_dark.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                switch_dark.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+            }
         }
     }
 }
