@@ -16,6 +16,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        progress_register.hide()
 
         button_back_login.setOnClickListener {
             finish()
@@ -23,6 +24,8 @@ class RegisterActivity : AppCompatActivity() {
 
         /*注册*/
         button_register.setOnClickListener {
+            progress_register.show()
+            button_register.isEnabled = false
             val query = BmobQuery<User>()
             query.addWhereEqualTo("username", edittext_register_username.text.toString())
             query.findObjects(object : FindListener<User>() {
@@ -49,6 +52,8 @@ class RegisterActivity : AppCompatActivity() {
                                                         Toast.LENGTH_SHORT
                                                     )
                                                         .show()
+                                                    progress_register.hide()
+                                                    button_register.isEnabled = true
                                                 }
                                             })
                                         } else {
@@ -57,17 +62,25 @@ class RegisterActivity : AppCompatActivity() {
                                                 "注册失败",
                                                 Toast.LENGTH_SHORT
                                             ).show()
+                                            progress_register.hide()
+                                            button_register.isEnabled = true
                                             Log.d("LoginActivity", "RegisterFailure:${p1.message}")
                                         }
                                     }
                                 })
                             } else {
                                 inputLayout_confirm.error = "两次密码不一致"
+                                progress_register.hide()
+                                button_register.isEnabled = true
                             }
                         } else {
                             inputLayout_username.error = "账号已存在"
+                            progress_register.hide()
+                            button_register.isEnabled = true
                         }
                     } else {
+                        progress_register.hide()
+                        button_register.isEnabled = true
                         Log.d("LoginActivity", "RegisterQueryFailure:${p1.message}")
                     }
                 }

@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        progress_login.hide()
 
         /*切换注册登录*/
         button_switch_register.setOnClickListener {
@@ -32,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
 
         /*登录*/
         button_login.setOnClickListener {
+            progress_login.show()
+            button_login.isEnabled = false
             val query = BmobQuery<User>()
             query.addWhereEqualTo("username", edittext_login_username.text.toString())
             query.addWhereEqualTo("password", edittext_login_password.text.toString())
@@ -40,6 +43,8 @@ class LoginActivity : AppCompatActivity() {
                     if (e == null) {
                         if (list?.size == 0) {
                             Toast.makeText(this@LoginActivity, "账号或密码错误", Toast.LENGTH_SHORT).show()
+                            button_login.isEnabled = true
+                            progress_login.hide()
                         } else {
                             val sharedPreferences =
                                 getSharedPreferences("login", Context.MODE_PRIVATE)
@@ -55,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                             Log.d("mTest", list!![0].objectId)
                             intent.putExtra("userId", list!![0].objectId)
                             setResult(RESULT_OK, intent)
-                            Toast.makeText(this@LoginActivity, "登陆成功", Toast.LENGTH_SHORT).show()
+                            progress_login.hide()
                             finish()
                         }
                     }

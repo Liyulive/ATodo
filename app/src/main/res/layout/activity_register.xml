@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:hideAnimationBehavior="outward"
+        app:indeterminateAnimationType="contiguous"
+        app:indicatorColor="@array/progress_colors"
+        app:indicatorDirectionLinear="leftToRight"
+        app:showAnimationBehavior="inward" />
+
     <LinearLayout
         android:orientation="vertical"
         android:padding="16dp"
