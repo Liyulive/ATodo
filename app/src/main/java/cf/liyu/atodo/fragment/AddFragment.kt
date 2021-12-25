@@ -91,8 +91,12 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                 delete.objectId = todoItem.objectId
                 delete.delete(object : UpdateListener() {
                     override fun done(p0: BmobException?) {
-                        clickCallBack?.clickConfirm()
-                        this@AddFragment.dismiss()
+                        if (p0 == null) {
+                            clickCallBack?.clickConfirm()
+                            this@AddFragment.dismiss()
+                        } else {
+                            Toast.makeText(this@AddFragment.requireContext(), p0.message, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 })
             }
@@ -108,11 +112,6 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                 updateItem.update(todoItem.objectId, object : UpdateListener() {
                     override fun done(p0: BmobException?) {
                         if (p0 == null) {
-                            Toast.makeText(
-                                this@AddFragment.requireContext(),
-                                "保存成功",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             clickCallBack?.clickConfirm()
                             this@AddFragment.dismiss()
                         } else {
@@ -138,11 +137,6 @@ class AddFragment(val user: String?, val category: Category?, val todoItem: Todo
                 ).save(object : SaveListener<String>() {
                     override fun done(id: String?, p1: BmobException?) {
                         if (p1 == null) {
-                            Toast.makeText(
-                                this@AddFragment.requireContext(),
-                                "添加成功",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             clickCallBack?.clickConfirm()
                             this@AddFragment.dismiss()
                         } else {

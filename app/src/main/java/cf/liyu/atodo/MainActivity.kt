@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         signSharedPreferences = this.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
         /*初始化Bmob*/
-        Bmob.initialize(this, "Your Bmob Id")
+        Bmob.initialize(this, "")
         Log.d("MainActivity", System.currentTimeMillis().toString())
 
         /*adapter数据并取消嵌套滑动*/
