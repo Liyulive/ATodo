@@ -65,7 +65,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        android:src="@drawable/ic_round_keyboard_arrow_down_24"
                         android:contentDescription="666" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -129,7 +129,7 @@
         android:layout_gravity="bottom"
         android:fitsSystemWindows="true"
         app:menu="@menu/more"
-        app:navigationIcon="@drawable/ic_outline_search_24" />
+        app:navigationIcon="@drawable/ic_round_search_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -167,7 +167,7 @@
 
             <ImageView
                 android:id="@+id/icon_filter_down"
-                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:src="@drawable/ic_round_keyboard_arrow_down_24"
                 android:layout_width="?attr/actionBarSize"
                 android:scaleType="center"
                 android:background="?attr/selectableItemBackgroundBorderless"

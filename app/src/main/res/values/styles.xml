@@ -9,7 +9,7 @@
     </style>
 
     <style name="Widget.Atodo.Chip.Assist" parent="Widget.Material3.Chip.Assist">
-        <item name="chipStrokeColor">@color/variant_90</item>
+        <item name="chipStrokeColor">?colorButtonNormal</item>
     </style>
 
     <style name="Widget.Atodo.MaterialDivider" parent="Widget.Material3.MaterialDivider">

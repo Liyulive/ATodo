@@ -77,7 +77,7 @@
 
                         <ImageView
                             android:layout_marginStart="16dp"
-                            android:src="@drawable/ic_outline_text_snippet_24"
+                            android:src="@drawable/ic_round_text_snippet_24"
                             android:layout_width="24dp"
                             android:layout_height="24dp" />
 
@@ -117,10 +117,10 @@
                         android:layout_height="?actionBarSize">
 
                         <ImageView
-                            android:layout_marginStart="16dp"
-                            android:src="@drawable/ic_baseline_key_24"
                             android:layout_width="24dp"
-                            android:layout_height="24dp" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:src="@drawable/ic_round_key_24" />
 
                         <LinearLayout
                             android:layout_marginStart="16dp"
@@ -172,7 +172,7 @@
 
                         <ImageView
                             android:layout_marginStart="16dp"
-                            android:src="@drawable/ic_baseline_dark_mode_24"
+                            android:src="@drawable/ic_round_dark_mode_24"
                             android:layout_width="24dp"
                             android:layout_height="24dp" />
 
@@ -209,7 +209,7 @@
 
                         <ImageView
                             android:layout_marginStart="16dp"
-                            android:src="@drawable/ic_outline_subtitles_24"
+                            android:src="@drawable/ic_round_subtitles_24"
                             android:layout_width="24dp"
                             android:layout_height="24dp" />
 
